@@ -8,6 +8,8 @@
 
 import UIKit
 import KRProgressHUD
+import Firebase
+
 
 class LoginViewController: UIViewController {
     
@@ -56,7 +58,9 @@ class LoginViewController: UIViewController {
             FUser.loginUserWith(email: emailTextField.text!, password: passwordTextField.text!, completion: { (error) in
                 
                 if error != nil {
-                    KRProgressHUD.showError(withMessage: "Error login in!")
+                    KRProgressHUD.showError(withMessage: "\(error!.localizedDescription)")
+                    
+                    
                     return
                 }
                 
@@ -86,6 +90,8 @@ class LoginViewController: UIViewController {
             KRProgressHUD.showError(withMessage: "Email is Empty!")
         }
     }
+    
+    
     
 
     //MARK: Go to app

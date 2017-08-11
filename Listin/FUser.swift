@@ -58,7 +58,7 @@ class FUser {
         if Firebase.Auth.auth().currentUser != nil {
             
             
-            if let dictionary = userDefaults.object(forKey: kCURRENTUSER){
+            if let dictionary = UserDefaults.standard.object(forKey: kCURRENTUSER){
                 
                 return FUser.init(_dictionary: dictionary as! NSDictionary)
             }
@@ -149,12 +149,7 @@ func saveUserLocally(fUser: FUser){
     
    }
 
-func userDictionaryFrom(user: FUser) -> NSDictionary {
-    
-    let createdAt = dateFormatter().string(from: user.createdAt)
-    
-    return NSDictionary(objects: [user.objectId, createdAt, user.email, user.firstName, user.lastName, user.fullName], forKeys: [kOBJECTID as NSCopying, kCREATEDAT as NSCopying, kEMAIL as NSCopying, kFIRSTNAME as NSCopying, kLASTNAME as NSCopying, kFULLNAME as NSCopying])
-}
+
 
 
 func fetchUser(userId: String, completion: @escaping (_ success: Bool) -> Void) {
@@ -166,8 +161,8 @@ func fetchUser(userId: String, completion: @escaping (_ success: Bool) -> Void) 
             
             let user = ((snapshot.value as! NSDictionary).allValues as Array).first! as! NSDictionary
             
-            UserDefaults.setValue(user, forKeyPath: kCURRENTUSER)
-            UserDefaults.standard.synchronize()
+            userDefaults.setValue(user, forKeyPath: kCURRENTUSER)
+            userDefaults.synchronize()
             
             
             completion(true)
@@ -178,6 +173,13 @@ func fetchUser(userId: String, completion: @escaping (_ success: Bool) -> Void) 
         }
     })
     
+}
+
+func userDictionaryFrom(user: FUser) -> NSDictionary {
+    
+    let createdAt = dateFormatter().string(from: user.createdAt)
+    
+    return NSDictionary(objects: [user.objectId, createdAt, user.email, user.firstName, user.lastName, user.fullName], forKeys: [kOBJECTID as NSCopying, kCREATEDAT as NSCopying, kEMAIL as NSCopying, kFIRSTNAME as NSCopying, kLASTNAME as NSCopying, kFULLNAME as NSCopying])
 }
 
 
